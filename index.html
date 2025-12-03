@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlexFit — Fitness Planner & Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg width="36" height="36" viewBox="0 0 24 24">
+          <path fill="#6c63ff" d="M12 2l2.9 6.6L22 10l-5 3.6L18 22l-6-3.6L6 22l1-8.4L2 10l7.1-1.4z"/>
+        </svg>
+        <span>FlexFit</span>
+      </div>
+      <div>
+        <button id="themeToggle" class="icon-btn">🌙</button>
+      </div>
+    </header>
+
+    <!-- Phone-like container -->
+    <main class="screen">
+
+      <!-- Navigation -->
+      <nav class="nav">
+        <button class="nav-btn active" data-view="dashboard">🏠 Dashboard</button>
+        <button class="nav-btn" data-view="workouts">💪 Workouts</button>
+        <button class="nav-btn" data-view="diet">🥗 Diet</button>
+        <button class="nav-btn" data-view="bmi">⚖️ BMI</button>
+        <button class="nav-btn" data-view="session">⏱ Session</button>
+      </nav>
+
+      <!-- Dashboard -->
+      <section class="view" id="dashboard">
+        <h2>Weekly Summary</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Total Workouts</h3>
+            <p id="summaryWorkouts">0</p>
+          </div>
+          <div class="card">
+            <h3>Calories[kcal]/(week)</h3>
+            <p id="summaryCalories">0 kcal</p>
+          </div>
+          <div class="card">
+            <h3>Streak</h3>
+            <p id="summaryStreak">0 days</p>
+          </div>
+        </div>
+        <div class="chart-card">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Workouts -->
+      <section class="view hidden" id="workouts">
+        <h2>Workout Planner</h2>
+        <div class="input-row">
+          <input id="wkName" placeholder="Exercise (e.g., Running)" />
+          <input id="wkDuration" type="number" placeholder="Duration (min)" />
+          <select id="wkDay">
+            <option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option>
+            <option>Fri</option><option>Sat</option><option>Sun</option>
+          </select>
+          <button id="addWorkoutBtn" class="btn">Add</button>
+        </div>
+        <div id="workoutList"></div>
+      </section>
+
+      <!-- Diet -->
+      <section class="view hidden" id="diet">
+        <h2>Diet Planner</h2>
+        <div class="input-row">
+          <input id="mealName" placeholder="Meal name (e.g., Oats + Banana)" />
+          <input id="mealCals" type="number" placeholder="Calories" />
+          <select id="mealDay">
+            <option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option>
+            <option>Fri</option><option>Sat</option><option>Sun</option>
+          </select>
+          <button id="addMealBtn" class="btn">Add</button>
+        </div>
+        <div id="mealList"></div>
+      </section>
+
+      <!-- BMI -->
+      <section class="view hidden" id="bmi">
+        <h2>BMI Calculator</h2>
+        <div class="bmi-card">
+          <div class="input-row">
+            <input id="weight" type="number" placeholder="Weight" />
+            <select id="weightUnit"><option value="kg">kg</option><option value="lb">lb</option></select>
+          </div>
+          <div class="input-row">
+            <input id="height" type="number" placeholder="Height" />
+            <select id="heightUnit"><option value="cm">cm</option><option value="ft">ft</option></select>
+          </div>
+          <button id="calcBmi" class="btn">Calculate BMI</button>
+          <p id="bmiResult" class="muted"></p>
+        </div>
+      </section>
+
+      <!-- Session -->
+      <section class="view hidden" id="session">
+        <h2>Workout Session</h2>
+        <div class="timer-card">
+          <div class="timer-display" id="sessionTimer">00:00</div>
+          <div class="input-row">
+            <select id="exerciseSelect"></select>
+            <input id="sessionDuration" type="number" value="20" min="1" /> <span class="muted">min</span>
+          </div>
+          <div class="input-row">
+            <button id="startSession" class="btn">Start</button>
+            <button id="pauseSession" class="btn ghost">Pause</button>
+            <button id="resetSession" class="btn ghost">Reset</button>
+          </div>
+          <div id="sessionCalories" class="muted">Estimated: 0 kcal</div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <small>Made with ❤️ • FlexFit</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
