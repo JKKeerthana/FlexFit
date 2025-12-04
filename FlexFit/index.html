@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlexFit — Fitness Planner & Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#6c63ff" d="M12 2l2.9 6.6L22 10l-5 3.6L18 22l-6-3.6L6 22l1-8.4L2 10l7.1-1.4z"/>
+        </svg>
+        <span>FlexFit</span>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-btn" title="Toggle theme">🌙</button>
+      </div>
+    </header>
+
+    <!-- Phone-like container -->
+    <main class="screen">
+
+      <!-- Navigation -->
+      <nav class="nav">
+        <button class="nav-btn active" data-view="dashboard">🏠 Dashboard</button>
+        <button class="nav-btn" data-view="workouts">💪 Workouts</button>
+        <button class="nav-btn" data-view="diet">🥗 Diet</button>
+        <button class="nav-btn" data-view="water">💧 Water</button>
+        <button class="nav-btn" data-view="bmi">⚖️ BMI</button>
+        <button class="nav-btn" data-view="session">⏱ Session</button>
+        <button class="nav-btn" data-view="profile">🧾 Profile</button>
+      </nav>
+
+      <!-- Dashboard -->
+      <section class="view" id="dashboard">
+        <h2 id="dashboardGreeting">Weekly Summary</h2>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Total Workouts</h3>
+            <p id="summaryWorkouts">0</p>
+          </div>
+          <div class="card">
+            <h3>Calories (week)</h3>
+            <p id="summaryCalories">0 kcal</p>
+          </div>
+          <div class="card">
+            <h3>Streak</h3>
+            <p id="summaryStreak">0 days</p>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+
+        <div class="dashboard-lower">
+          <div class="progress-card card">
+            <h3>Weekly Goals</h3>
+            <div class="goal">
+              <div>Burn goal: <span id="goalBurnVal">1500</span> kcal <span id="goalBurnPct" class="goalPct"></span></div>
+              <div class="progress"><div id="goalBurnProgress"></div></div>
+            </div>
+            <div class="goal">
+              <div>Workouts goal: <span id="goalWorkoutVal">4</span> <span id="goalWorkoutPct" class="goalPct"></span></div>
+              <div class="progress"><div id="goalWorkoutProgress"></div></div>
+            </div>
+            <div class="goal">
+              <div>Calories consumed target (week): <span id="goalCalsVal">14000</span> <span id="goalCalsPct" class="goalPct"></span></div>
+              <div class="progress"><div id="goalCalsProgress"></div></div>
+            </div>
+          </div>
+
+          <div class="tips-card card">
+            <h3>Daily Tip</h3>
+            <p id="dailyTip" class="muted">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Workouts -->
+      <section class="view hidden" id="workouts">
+        <h2>Workout Planner</h2>
+        <div class="input-row">
+          <input id="wkName" placeholder="Exercise (e.g., Running)" />
+          <input id="wkDuration" type="number" placeholder="Duration (min)" min="1" />
+          <select id="wkDay">
+            <option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option>
+            <option>Fri</option><option>Sat</option><option>Sun</option>
+          </select>
+          <button id="addWorkoutBtn" class="btn">Add</button>
+        </div>
+        <div id="workoutList"></div>
+      </section>
+
+      <!-- Diet -->
+      <section class="view hidden" id="diet">
+        <h2>Diet Planner</h2>
+        <div class="input-row">
+          <input id="mealName" placeholder="Meal name (e.g., Oats + Banana)" />
+          <input id="mealCals" type="number" placeholder="Calories" min="0" />
+          <select id="mealDay">
+            <option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option>
+            <option>Fri</option><option>Sat</option><option>Sun</option>
+          </select>
+          <button id="addMealBtn" class="btn">Add</button>
+        </div>
+        <div id="mealList"></div>
+      </section>
+
+      <!-- Water -->
+      <section class="view hidden" id="water">
+        <h2>Water Intake</h2>
+        <div class="card" style="padding:12px;">
+          <div class="water-top">
+            <div class="input-row" style="flex-wrap:nowrap">
+              <div style="display:flex;gap:8px;align-items:center;">
+                <button id="add250" class="btn">+250 ml</button>
+                <button id="add500" class="btn">+500 ml</button>
+                <button id="add750" class="btn">+750 ml</button>
+                <button id="resetWater" class="btn ghost">Reset</button>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+                <input id="waterGoalInput" type="number" placeholder="Goal ml" style="width:110px;padding:6px;border-radius:8px;border:1px solid rgba(0,0,0,0.08)"/>
+                <button id="saveWaterGoal" class="btn ghost">Save</button>
+              </div>
+            </div>
+            <p class="muted">Today: <strong id="waterToday">0</strong> ml / <strong id="waterGoalLabel">2000</strong> ml — <span id="waterPct">0%</span></p>
+          </div>
+
+          <div class="water-body" style="display:flex;gap:12px;align-items:center;">
+            <div style="width:200px;height:200px;">
+              <canvas id="waterChart"></canvas>
+            </div>
+            <div style="flex:1;">
+              <h4>History (last 7 days)</h4>
+              <div id="waterHistory" class="muted" style="max-height:160px;overflow:auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Profile -->
+      <section class="view hidden" id="profile">
+        <h2>Profile & Goals</h2>
+        <div class="card">
+          <div class="input-row">
+            <input id="profileName" placeholder="Your name" />
+            <select id="profileGender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="input-row">
+            <input id="profileAge" type="number" placeholder="Age" min="10" />
+            <input id="profileWeight" type="number" placeholder="Weight (kg)" min="20" />
+            <input id="profileHeight" type="number" placeholder="Height (cm)" min="80" />
+          </div>
+          <div class="input-row">
+            <select id="profileActivity">
+              <option value="1.2">Sedentary</option>
+              <option value="1.375">Lightly active</option>
+              <option value="1.55">Moderately active</option>
+              <option value="1.725">Active</option>
+              <option value="1.9">Very active</option>
+            </select>
+            <button id="saveProfileBtn" class="btn">Save</button>
+          </div>
+
+          <p class="muted">BMR: <strong id="bmrValue">—</strong> kcal/day • TDEE: <strong id="tdeeValue">—</strong> kcal/day</p>
+
+          <h4>Set Weekly Goals</h4>
+          <div class="input-row">
+            <input id="goalBurn" type="number" placeholder="Burn goal (kcal)" />
+            <input id="goalWorkout" type="number" placeholder="Workouts/week" />
+            <input id="goalCals" type="number" placeholder="Calories target (week)" />
+            <button id="saveGoalsBtn" class="btn">Save</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- BMI -->
+      <section class="view hidden" id="bmi">
+        <h2>BMI Calculator</h2>
+        <div class="bmi-card card">
+          <div class="input-row">
+            <input id="weight" type="number" placeholder="Weight" />
+            <select id="weightUnit">
+              <option value="kg">kg</option>
+              <option value="lb">lb</option>
+            </select>
+          </div>
+          <div class="input-row">
+            <input id="height" type="number" placeholder="Height" />
+            <select id="heightUnit">
+              <option value="cm">cm</option>
+              <option value="ft">ft</option>
+            </select>
+          </div>
+          <button id="calcBmi" class="btn">Calculate BMI</button>
+          <p id="bmiResult" class="muted"></p>
+        </div>
+      </section>
+
+      <!-- Session -->
+      <section class="view hidden" id="session">
+        <h2>Workout Session</h2>
+
+        <!-- Toggle Timer / Stopwatch -->
+        <div class="input-row">
+          <button id="toggleTimerStopwatch" class="btn">Switch to Stopwatch</button>
+        </div>
+
+        <!-- Timer Card -->
+        <div class="timer-card card" id="timerCard">
+          <div class="timer-display" id="sessionTimer">00:00</div>
+          <div class="input-row">
+            <select id="exerciseSelect"></select>
+            <input id="sessionDuration" type="number" value="20" min="1" /> <span class="muted">min</span>
+          </div>
+          <div class="input-row">
+            <button id="startSession" class="btn">Start</button>
+            <button id="pauseSession" class="btn ghost">Pause</button>
+            <button id="resetSession" class="btn ghost">Reset</button>
+            <button id="saveSessionTimer" class="btn ghost">Finish!</button>
+
+          </div>
+          <div id="sessionCalories" class="muted">Estimated: 0 kcal</div>
+        </div>
+
+        <!-- Stopwatch Card -->
+        <div class="timer-card card hidden" id="stopwatchCard">
+          <div class="timer-display" id="stopwatchTimer">00:00</div>
+          <div class="input-row">
+            <select id="stopwatchExerciseSelect"></select>
+          </div>
+          <div class="input-row">
+            <button id="startStopwatch" class="btn">Start</button>
+            <button id="pauseStopwatch" class="btn ghost">Pause</button>
+            <button id="resetStopwatch" class="btn ghost">Reset</button>
+            <button id="saveStopwatch" class="btn ghost">Finish!</button>
+          </div>
+          <div id="stopwatchCalories" class="muted">Estimated: 0 kcal</div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <small>Made with ❤️ • FlexFit</small>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
