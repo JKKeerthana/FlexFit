@@ -97,14 +97,15 @@ body{margin:0;font-family:Inter,Segoe UI,system-ui,Arial;background:var(--bg);di
 
 /* Dark mode buttons */
 :root.dark .btn.ghost {
-  color: #fff; /* text visible */
-  border-color: rgba(255,255,255,0.3); /* visible border */
+  color: #fff; 
+  border-color: rgba(255,255,255,0.3); 
 }
 
 :root.dark .btn { 
-  color: #fff; /* keep gradient text readable if needed */
+  color: #fff; 
 }
 
-/* Optional: hover effect for visibility */
+
 .btn:hover { opacity: 0.9; }
 :root.dark .btn:hover, :root.dark .btn.ghost:hover { opacity: 0.85; }
+
