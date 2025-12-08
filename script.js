@@ -13,7 +13,7 @@ const DB = {
   remove(key){ localStorage.removeItem(key); }
 };
 
-// Defaults if first run
+
 if(!localStorage.getItem('profile')){
   DB.set('profile', { name:'', gender:'male', age:25, weight:70, height:170, activity:1.375 });
 }
@@ -40,7 +40,7 @@ qsa('.nav-btn').forEach(btn => {
   });
 });
 
-// ---------- Theme Toggle ----------
+// ---------Toggle ----------
 const themeToggle = qs('#themeToggle');
 themeToggle.addEventListener('click', () => {
   document.documentElement.classList.toggle('dark');
@@ -108,13 +108,13 @@ addWorkoutBtn.addEventListener('click', ()=>{
         day = wkDay.value;
   if(!name || !duration || !day) return;
   const wks = DB.get('workouts', []);
-  // do NOT set date when adding a scheduled workout; date is set when it's completed
+
   wks.push({ id: UID(), name, duration, day, date: null, done:false });
   DB.set('workouts', wks);
   wkName.value=''; wkDuration.value=''; renderWorkouts(); updateDashboard(); populateExerciseSelect();
 });
 
-// fixed listener: use closest button to ensure dataset reads work even if inner element clicked
+
 wkListEl.addEventListener('click', e=>{
   const btn = e.target.closest('button');
   if(!btn) return;
@@ -187,7 +187,7 @@ addMealBtn.addEventListener('click', ()=>{
   mealName.value=''; mealCals.value=''; renderMeals(); updateDashboard();
 });
 
-// fixed listener similar to workouts
+
 mealListEl.addEventListener('click', e=>{
   const btn = e.target.closest('button');
   if(!btn) return;
@@ -231,7 +231,7 @@ function populateProfile(){
   goalCals.value = goals.cals || 14000;
 
   computeBMR();
-  // update dashboard greeting (if dashboard open)
+
   updateDashboardGreeting();
 }
 
@@ -326,12 +326,12 @@ const stopwatchCard = qs('#stopwatchCard');
 
 toggleBtn.addEventListener('click', () => {
   if(timerCard.classList.contains('hidden')){
-    // show timer
+    //timer
     timerCard.classList.remove('hidden');
     stopwatchCard.classList.add('hidden');
     toggleBtn.textContent = 'Switch to Stopwatch';
   } else {
-    // show stopwatch
+    //stopwatch
     timerCard.classList.add('hidden');
     stopwatchCard.classList.remove('hidden');
     toggleBtn.textContent = 'Switch to Timer';
@@ -347,14 +347,14 @@ qs('#startStopwatch').addEventListener('click', () => {
   if(stopwatchTimer) return; // already running
   const startTime = Date.now() - stopwatchElapsed*1000; // resume
   stopwatchTimer = setInterval(() => {
-    // calculate total seconds elapsed
+ 
     stopwatchElapsed = Math.floor((Date.now() - startTime) / 1000);
 
     const mm = String(Math.floor(stopwatchElapsed / 60)).padStart(2, '0');
     const ss = String(stopwatchElapsed % 60).padStart(2, '0');
     stopwatchDisplay.textContent = `${mm}:${ss}`;
 
-    // calculate calories
+
     const elapsedMins = stopwatchElapsed / 60; // fractional minutes for precision
     const exercise = stopwatchExerciseSelect.value || 'Stopwatch';
     qs('#stopwatchCalories').textContent = 'Estimated: ' + estimateCalories(elapsedMins, exercise) + ' kcal';
@@ -416,7 +416,7 @@ if(uniqueDates.length){
       streak++;
       expected -= 24*60*60*1000; // move to previous day
     } else if(d < expected){
-      // gap detected, break streak
+
       break;
     }
   }
@@ -536,7 +536,7 @@ function renderWater(){
   waterChart.data.datasets[0].data = [Math.min(today,goal), Math.max(0, goal - today)];
   waterChart.update();
 
-  // render history (last 7 days)
+  //history (last 7 days)
   const hist = wl.history || {};
   const keys = Object.keys(hist).sort().reverse().slice(0,7);
   waterHistoryEl.innerHTML = '';
@@ -643,7 +643,7 @@ qs('#saveSessionTimer').addEventListener('click', () => {
   }
   const exercise = exerciseSelect.value || 'Timer Session';
 
-  // Calculate minutes actually completed
+  // Calculate minutes completed
   const totalSeconds = parseInt(qs('#sessionDuration').value)*60 - sessionRemaining;
   const mins = Math.ceil(totalSeconds / 60); // round up partial minutes
 
@@ -679,7 +679,8 @@ qs('#saveStopwatch').addEventListener('click', () => {
 });
 
 
-// ---------- Small helpers ----------
+
 function safeNum(v){ return isNaN(Number(v)) ? 0 : Number(v); }
 
-// ---------- End of file ----------
+
+
